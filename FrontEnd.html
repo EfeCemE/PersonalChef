@@ -98,18 +98,18 @@
             const messageInput = document.getElementById('message');
             const message = messageInput.value;
             if (message.trim() === '') return;
-
+    
             // Add user message to chat box
             const userMessageDiv = document.createElement('div');
             userMessageDiv.className = 'chat-message user-message';
             userMessageDiv.innerText = message;
             document.getElementById('chatBox').appendChild(userMessageDiv);
-
+    
             // Clear input
             messageInput.value = '';
-
+    
             // Send message to backend
-            fetch('/chat', {
+            fetch('http://127.0.0.1:5000/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -123,11 +123,12 @@
                 botMessageDiv.className = 'chat-message bot-message';
                 botMessageDiv.innerText = data.response;
                 document.getElementById('chatBox').appendChild(botMessageDiv);
-
+    
                 // Scroll chat box to bottom
                 document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
             });
         });
     </script>
+    
 </body>
 </html>
