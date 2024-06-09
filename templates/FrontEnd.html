@@ -82,6 +82,7 @@
     </style>
 </head>
 <body>
+    {% block body %}
     <div class="chat-container">
         <div class="chat-header">Personal Chef Chatbot</div>
         <div class="chat-box" id="chatBox">
@@ -129,6 +130,6 @@
             });
         });
     </script>
-    
+    {% endblock %}
 </body>
 </html>

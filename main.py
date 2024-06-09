@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import openai
 import ingredients_cuisine_dataset
 
@@ -29,6 +29,10 @@ def get_recipe_recommendation(ingredients, exclude_ingredients, cuisine, meal_ty
 
     recipe = response['choices'][0]['message']['content'].strip()
     return recipe
+
+@app.route('/')
+def hello():
+    return render_template('FrontEnd.html')
 
 @app.route('/chat', methods=['POST'])
 def chat():
