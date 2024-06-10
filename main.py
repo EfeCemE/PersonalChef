@@ -31,10 +31,32 @@ def get_recipe_recommendation(ingredients, exclude_ingredients, cuisine, meal_ty
     return recipe
 
 @app.route('/')
-def hello():
+def index():
     return render_template('index.html')
 
-@app.route('/chat', methods=['POST'])
+
+
+@app.route('/chat', methods = ['POST'])
+def open_chat():
+    data = request.get_json()
+    user_preference = data['user_prefrence']
+
+    user_ingredients = user_preference['ingredients']
+    user_exclude_ingredients = []
+    user_cuisine = user_preference['cuisine']
+
+    ingredients = ingredients_cuisine_dataset.filter_user_input(user_ingredients, ingredients_cuisine_dataset.df['ingredients'].tolist())
+    exclude_ingredients = ingredients_cuisine_dataset.filter_user_input(user_exclude_ingredients, ingredients_cuisine_dataset.df['ingredients'].tolist())
+    cuisine = user_cuisine
+
+    if not ingredients or not cuisine:
+        return jsonify({"response": "Invalid input provided."})
+
+    recipe_id = ingredients_cuisine_dataset.get_recipe_recommendations(ingredients, exclude_ingredients, cuisine)
+    
+    return jsonify({"response": recipe_id})
+
+@app.route('/chatty', methods=['POST'])
 def chat():
     data = request.get_json()
     user_message = data['message']
