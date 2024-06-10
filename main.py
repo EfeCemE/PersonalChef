@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import openai
 import dataset_manager 
 
 app = Flask(__name__)
 
-openai.api_key = '' #put the api key here but be careful with the reference
+openai.api_key = 'sk-proj-IURgwL9agMbyAohD9yiUT3BlbkFJCHBSuJZ8jTE0OFkm0u0T' #put the api key here but be careful with the reference
 
 @app.route('/')
 def index():
@@ -15,22 +15,23 @@ def index():
 @app.route('/chat', methods = ['POST'])
 def open_chat():
     data = request.get_json()
-    user_preference = data['user_prefrence']
+    user_preference = {
+        'time': data.get('time'),
+        'meal_type': data.get('meal_type'),
+        'cuisine': data.get('cuisine')
+    }
 
-    user_ingredients = user_preference['ingredients']
-    user_exclude_ingredients = []
-    user_cuisine = user_preference['cuisine']
+    if not user_preference['cuisine']:
+        return jsonify({"success": False, "message": "Cuisine selection is required."})
 
-    ingredients = ingredients_cuisine_dataset.filter_user_input(user_ingredients, ingredients_cuisine_dataset.df['ingredients'].tolist())
-    exclude_ingredients = ingredients_cuisine_dataset.filter_user_input(user_exclude_ingredients, ingredients_cuisine_dataset.df['ingredients'].tolist())
-    cuisine = user_cuisine
+    # Process the user preferences (e.g., save to session or database)
 
-    if not ingredients or not cuisine:
-        return jsonify({"response": "Invalid input provided."})
+    return jsonify({"success": True})
+    return redirect(url_for('frontend'))
 
-    recipe_id = ingredients_cuisine_dataset.get_recipe_recommendations(ingredients, exclude_ingredients, cuisine)
-    
-    return jsonify({"response": recipe_id})
+@app.route('/frontend')
+def frontend():
+    return app.send_static_file('FrontEnd.html')
 
 @app.route('/chatty', methods=['POST'])
 def chat():

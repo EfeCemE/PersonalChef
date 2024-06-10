@@ -184,14 +184,14 @@ body {
                 <option value="green">Green Onion</option>
                 <option value="shallot">Shallot</option>
             </select>
-            
+
             <label for="meal-type">Label</label>
             <select id="meal-type">
                 <option value="dinner">Dinner</option>
                 <option value="dessert">Dessert</option>
                 <option value="snack">Snack</option>
             </select>
-            
+
             <label for="cuisine">Select Cuisine</label>
             <select id="cuisine">
                 <option value="asian">Asian</option>
@@ -202,31 +202,36 @@ body {
             </select>
         </div>
         <!-- using this to redirect but i need to post data as well -->
-        <button id="startChat" class="start-chat" >Start the Chat</button>
+        <button id="startChat" class="start-chat">Start the Chat</button>
     </div>
 
-    <script> 
-
-        document.getElementById('startChat').addEventListener('start-chat', function(event){
+    <script>
+        document.getElementById('startChat').addEventListener('click', function(event) {
             event.preventDefault();
-                    const user_prefrence = {};
-        
-                    user_prefrence.time = document.getElementById('time-range').value
-                    user_prefrence.meal_type = document.getElementById('meal_type').value
-                    user_prefrence.cuisine = document.getElementById('cuisine')
-                    user_prefrence.ingredients = document.getElementById('ingriedients')
-                    fetch('http://127.0.0.1:5000/chat', {
+                    const user_preference = {
+                        time: document.getElementById('time-range').value,
+                        meal_type: document.getElementById('meal-type').value,
+                        cuisine: document.getElementById('cuisine').value,
+                    };
+
+
+                    fetch('/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ data: user_prefrence })
+                        body: JSON.stringify(user_preference)
                     })
-                    window.location.href = "http://127.0.0.1:5000/chat";
-        })
-                    
-        
-        </script>
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = "/frontend";
+                        } else {
+                            alert(data.message);
+                        }
+                    });
+                });
+    </script>
     {% endblock %}
 </body>
 </html>
