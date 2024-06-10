@@ -4,7 +4,7 @@ import dataset_manager
 
 app = Flask(__name__)
 
-openai.api_key = '' #put the api key here but be careful with the reference
+openai.api_key = 'sk-proj-IURgwL9agMbyAohD9yiUT3BlbkFJCHBSuJZ8jTE0OFkm0u0T' #put the api key here but be careful with the reference
 
 @app.route('/')
 def index():
