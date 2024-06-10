@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Page</title>
+    <style>
+        * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 10px; /* Add padding to avoid content touching edges on small screens */
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.toggle-buttons {
+    /* display: flex; */
+    text-align: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.toggle-button {
+    /* flex: 1; */
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    margin: 15px 32px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-button.active {
+    background-color: #d4d4d4;
+}
+
+.time-selector {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.time-selector label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#time-range {
+    width: 50%;
+}
+
+.datalists {
+    display: flex;
+    justify-content: space-between;
+}
+
+.datalists option {
+    display: inline-block;
+}
+
+.dropdowns {
+    margin-bottom: 20px;
+}
+
+.dropdowns label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.dropdowns select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.start-chat {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.start-chat:hover {
+    background-color: #45a049;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    .toggle-buttons {
+        flex-direction: column;
+    }
+
+    .toggle-button {
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 400px) {
+    .container {
+        padding: 10px;
+    }
+
+    .toggle-buttons {
+        flex-direction: column;
+    }
+
+    .toggle-button {
+        margin: 5px 0;
+        padding: 8px;
+    }
+
+    .time-selector label, .dropdowns label {
+        font-size: 12px;
+    }
+
+    .dropdowns select, .start-chat {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .start-chat {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    {% block body %}
+    <div class="container">
+        <div class="toggle-buttons">
+            <button class="toggle-button active">Can Go Shopping</button>
+            <button class="toggle-button">Ingredients at Home</button>
+        </div>
+        <div class="time-selector">
+            <label for="time-range">Select the time you would like to spend</label>
+            <input type="range" id="time-range" min="10" max="240" value="150" step="10" list="tickmarks">
+            <datalist id="tickmarks">
+                <option value="10" label="10 Minutes">
+                <option value="150" label="2.5 Hours">
+                <option value="240" label="4 Hours">
+            </datalist>
+        </div>
+        <div class="dropdowns">
+            <label for="onion">Onion</label>
+            <select id="onion">
+                <option value="yellow">Yellow Onion</option>
+                <option value="red">Red Onion</option>
+                <option value="green">Green Onion</option>
+                <option value="shallot">Shallot</option>
+            </select>
+            
+            <label for="meal-type">Label</label>
+            <select id="meal-type">
+                <option value="dinner">Dinner</option>
+                <option value="dessert">Dessert</option>
+                <option value="snack">Snack</option>
+            </select>
+            
+            <label for="cuisine">Select Cuisine</label>
+            <select id="cuisine">
+                <option value="asian">Asian</option>
+                <option value="balkan">Balkan</option>
+                <option value="chinese">Chinese</option>
+                <option value="greek">Greek</option>
+                <option value="indian">Indian</option>
+            </select>
+        </div>
+        <button class="start-chat">Start the Chat</button>
+    </div>
+    {% endblock %}
+</body>
+</html>

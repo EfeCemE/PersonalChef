@@ -32,7 +32,7 @@ def get_recipe_recommendation(ingredients, exclude_ingredients, cuisine, meal_ty
 
 @app.route('/')
 def hello():
-    return render_template('FrontEnd.html')
+    return render_template('index.html')
 
 @app.route('/chat', methods=['POST'])
 def chat():
