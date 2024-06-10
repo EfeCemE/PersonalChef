@@ -18,27 +18,30 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f4f4f4;
-    padding: 10px; /* Add padding to avoid content touching edges on small screens */
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
 }
 
 .container {
-    background-color: white;
+    background-color: #d3d3d3;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    width: 30%;
+    height: 500px;
 }
 
 .toggle-buttons {
     /* display: flex; */
     text-align: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    margin-top: 15px;
 }
 
 .toggle-button {
@@ -46,29 +49,34 @@ body {
     padding: 10px;
     border: none;
     border-radius: 8px;
-    margin: 15px 32px;
+    margin: 10px -2px;
     cursor: pointer;
-    background-color: #e0e0e0;
+    background-color: #bab86c;
     transition: background-color 0.3s ease;
 }
 
 .toggle-button.active {
-    background-color: #d4d4d4;
+    background-color: #808000;
+
 }
 
 .time-selector {
     margin-bottom: 20px;
     text-align: center;
+
+
 }
 
 .time-selector label {
     display: block;
     margin-bottom: 10px;
     font-size: 14px;
+
 }
 
 #time-range {
     width: 50%;
+
 }
 
 .datalists {
@@ -104,7 +112,7 @@ body {
     padding: 10px;
     border: none;
     border-radius: 8px;
-    background-color: #4caf50;
+    background-color: #808000;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -112,7 +120,7 @@ body {
 }
 
 .start-chat:hover {
-    background-color: #45a049;
+    background-color: #bab86c;
 }
 
 /* Responsive adjustments */
@@ -169,7 +177,7 @@ body {
         </div>
         <div class="time-selector">
             <label for="time-range">Select the time you would like to spend</label>
-            <input type="range" id="time-range" min="10" max="240" value="150" step="10" list="tickmarks">
+            <input type="range" id="time-range" min="10" max="240" value="150" step="10" list="tickmarks" >
             <datalist id="tickmarks">
                 <option value="10" label="10 Minutes">
                 <option value="150" label="2.5 Hours">
