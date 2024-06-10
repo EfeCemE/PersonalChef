@@ -1,34 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 import openai
-import ingredients_cuisine_dataset
+import dataset_manager 
 
 app = Flask(__name__)
 
 openai.api_key = '' #put the api key here but be careful with the reference
-
-
-def filter_user_input(user_input, valid_options):
-    return [item.strip() for item in user_input.split(',') if item.strip() in valid_options]
-
-def get_recipe_recommendation(ingredients, exclude_ingredients, cuisine, meal_type):
-    messages = [
-        {"role": "system", "content": "You are a helpful assistant that provides recipe recommendations."},
-        {"role": "user", "content": (
-            f"I have the following ingredients: {', '.join(ingredients)}.\n"
-            f"Please exclude these ingredients: {', '.join(exclude_ingredients)}.\n"
-            f"I prefer {cuisine}.\n"
-            f"Can you suggest a recipe for me?")
-         }
-    ]
-
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-        max_tokens=150
-    )
-
-    recipe = response['choices'][0]['message']['content'].strip()
-    return recipe
 
 @app.route('/')
 def hello():
@@ -43,16 +19,17 @@ def chat():
     user_ingredients = parts[0].split(':')[1].strip()
     user_exclude_ingredients = parts[1].split(':')[1].strip()
     user_cuisine = parts[2].split(':')[1].strip()
+    user_max_time = int(parts[3].split(':')[1].strip()) if len(parts) > 3 and parts[3].split(':')[1].strip().isdigit() else None
 
-    ingredients = ingredients_cuisine_dataset.filter_user_input(user_ingredients, ingredients_cuisine_dataset.df['ingredients'].tolist())
-    exclude_ingredients = ingredients_cuisine_dataset.filter_user_input(user_exclude_ingredients, ingredients_cuisine_dataset.df['ingredients'].tolist())
+    ingredients = dataset_manager.filter_user_input(user_ingredients, [item for sublist in dataset_manager.df['ingredients'].apply(eval).tolist() for item in sublist])
+    exclude_ingredients = dataset_manager.filter_user_input(user_exclude_ingredients, [item for sublist in dataset_manager.df['ingredients'].apply(eval).tolist() for item in sublist])
     cuisine = user_cuisine
     
     if not ingredients or not cuisine:
         return jsonify({"response": "Invalid input provided."})
 
-    recipe_id = ingredients_cuisine_dataset.get_recipe_recommendations(ingredients, exclude_ingredients, cuisine)
-    return jsonify({"response": recipe_id})
+    dataset_managers = dataset_manager.get_dataset_managers(ingredients, exclude_ingredients, cuisine, user_max_time)
+    return jsonify({"response": dataset_managers})
 
 if __name__ == "__main__":
     app.run(debug=True)
