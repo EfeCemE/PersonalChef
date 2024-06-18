@@ -72,3 +72,28 @@ def chat():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+#parts = user_message.split(';')
+    #        user_ingredients = parts[0].split(':')[1].strip()
+    #    user_exclude_ingredients = parts[1].split(':')[1].strip()
+    #   user_cuisine = parts[2].split(':')[1].strip()
+    #   user_max_time = int(parts[3].split(':')[1].strip()) if len(parts) > 3 and parts[3].split(':')[
+    #       1].strip().isdigit() else None
+    #except (IndexError, ValueError):
+    #   return jsonify({"response": "Invalid message format."})
+
+    #ingredients = dataset_manager.filter_user_input(user_ingredients, [item for sublist in
+    #                                                                   dataset_manager.df['ingredients'].apply(
+    #                                                                       eval).tolist() for item in sublist])
+    #exclude_ingredients = dataset_manager.filter_user_input(user_exclude_ingredients, [item for sublist in
+     #                                                                                  dataset_manager.df[
+     #                                                                                      'ingredients'].apply(
+     #                                                                                      eval).tolist() for item in
+      #                                                                                 sublist])
+    #cuisine = user_cuisine
+
+    #if not ingredients or not cuisine:
+    #    return jsonify({"response": "Invalid input provided."})
+
+    #dataset_managers = dataset_manager.get_dataset_managers(ingredients, exclude_ingredients, cuisine, user_max_time)
+    #return jsonify({"response": dataset_managers})
