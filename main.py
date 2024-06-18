@@ -7,9 +7,9 @@ import dataset_manager
 
 app = Flask(__name__)
 
-openai.api_key = 'sk-proj-IURgwL9agMbyAohD9yiUT3BlbkFJCHBSuJZ8jTE0OFkm0u0T'
+openai.api_key = ''
 
-client = OpenAI(api_key='sk-proj-IURgwL9agMbyAohD9yiUT3BlbkFJCHBSuJZ8jTE0OFkm0u0T')
+client = OpenAI(api_key='')
 
 def generate_response(user_message):
     try:
