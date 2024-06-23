@@ -80,47 +80,47 @@ def chat():
     # to clear session count
     if(user_message == 'clear'):
         session['chat_count'] = 0
-        return jsonify({"response": "Please Enter the ingriediets like Chicken;Bread"})
+        return jsonify({"response": "Please Enter the ingredients like Chicken;Bread"})
     
-    # Initial input for user ingriedients
+    # Initial input for user ingredients
     if(session['chat_count'] == 0):
-        user_ingriedinets = user_message.split(';')
-        if(len(user_ingriedinets) == 0):
+        user_ingredients = user_message.split(';')
+        if(len(user_ingredients) == 0):
             session['chat_count'] = 0
-            return jsonify({"response": "Please Enter the ingriediets like Chicken;Bread"})
+            return jsonify({"response": "Please Enter the ingredients like Chicken;Bread"})
         else:
             session['chat_count'] = 1
-            session['user_ingriedients'] = user_ingriedinets
-            print("=============== user ingriedients======================")
-            print(session['user_ingriedients'])
+            session['user_ingredients'] = user_ingredients
+            print("=============== user ingredients======================")
+            print(session['user_ingredients'])
 
             session['chat_count'] = 1
-            return jsonify({"response": "Please Enter the ingriediets that you want to exclude like Chicken;Bread"})
+            return jsonify({"response": "Please Enter the ingredients that you want to exclude like Chicken;Bread"})
         
-    # Getting excluded Ingriedients
+    # Getting excluded ingredients
     elif(session['chat_count'] == 1):
         session['chat_count'] = 2
 
-        user_prefrence = session['user_preference']
-        user_ingriedinets = session['user_ingriedients']
+        user_preference = session['user_preference']
+        user_ingredients = session['user_ingredients']
         user_exclude_ingredients = user_message.split(';')
         
-        reciepe = dataset_manager.get_recipe_recommendations(user_ingriedinets,
+        recipe = dataset_manager.get_recipe_recommendations(user_ingredients,
                                                              user_exclude_ingredients,
-                                                             user_prefrence['cuisine'],
-                                                             user_prefrence['time'])
+                                                             user_preference['cuisine'],
+                                                             user_preference['time'])
         
-        session['reciepe'] = reciepe
-        print(reciepe)
-        return jsonify({"response" : reciepe})
+        session['recipe'] = recipe
+        print(recipe)
+        return jsonify({"response" : recipe})
 
 
     try:
         print("bot")
 
-        # First message to chat bot added reciepe as chatgpt should have context
+        # First message to chat bot added recipe as chatgpt should have context
         if(session['chat_count'] == 2):
-            user_message = 'given this reciepe ' + session['reciepe'] + user_message
+            user_message = 'given this recipe ' + session['recipe'] + user_message
         bot_response = retry_with_backoff(lambda: generate_response(user_message))
     except Exception as e:
         bot_response = f"An error occurred after retries: {str(e)}"

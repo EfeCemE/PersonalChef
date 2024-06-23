@@ -1,4 +1,5 @@
 import pandas as pd
+from ast import literal_eval
 
 def load_dishes_from_csv(csv_file):
     return pd.read_csv(csv_file)
@@ -12,17 +13,17 @@ def filter_user_input(user_input, valid_options):
 def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_total_time):
     
     # delete this line only for testing
-    return "1. boil pasta with sauce then add oil in pan add sauce cook sauce for 5 minutes and boiled pasta enjoy"
+    #return "1. boil pasta with sauce then add oil in pan add sauce cook sauce for 5 minutes and boiled pasta enjoy"
 
     matching_dishes = df[df['cuisine_path'].str.contains(cuisine, case=False)]
-    matching_dishes = matching_dishes[matching_dishes['ingredients'].apply(lambda x: set(ingredients).issubset(set(eval(x))))]
+    matching_dishes = matching_dishes[matching_dishes['ingredients'].apply(lambda x: set(ingredients).issubset(set(literal_eval(x))))]
 
     if exclude_ingredients:
         for exclude_ingredient in exclude_ingredients:
-            matching_dishes = matching_dishes[~matching_dishes['ingredients'].apply(lambda x: exclude_ingredient in eval(x))]
+            matching_dishes = matching_dishes[~matching_dishes['ingredients'].apply(lambda x: exclude_ingredient in literal_eval(x))]
     
     if max_total_time is not None:
-        matching_dishes = matching_dishes[~matching_dishes['ingredients'].apply(lambda x: exclude_ingredient in eval(x))]
+        matching_dishes = matching_dishes[matching_dishes['total_time'] <= max_total_time]
     
     if not matching_dishes.empty:
         return matching_dishes[['recipe_name', 'prep_time', 'cook_time', 'total_time', 'servings', 'ingredients', 'directions', 'cuisine_path']].to_dict(orient='records')
