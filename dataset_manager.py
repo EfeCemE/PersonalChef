@@ -10,6 +10,10 @@ def filter_user_input(user_input, valid_options):
     return [item.strip() for item in user_input.split(',') if item.strip() in valid_options]
 
 def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_total_time):
+    
+    # delete this line only for testing
+    return "1. boil pasta with sauce then add oil in pan add sauce cook sauce for 5 minutes and boiled pasta enjoy"
+
     matching_dishes = df[df['cuisine_path'].str.contains(cuisine, case=False)]
     matching_dishes = matching_dishes[matching_dishes['ingredients'].apply(lambda x: set(ingredients).issubset(set(eval(x))))]
 
