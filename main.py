@@ -104,16 +104,22 @@ def chat():
         user_preference = session['user_preference']
         user_ingredients = session['user_ingredients']
         user_exclude_ingredients = user_message.split(';')
+
+        # !!! stripped the chosen and excluded ingredients for accurate formatted parameters
+        user_ingredients = [ingredient.strip() for ingredient in user_ingredients]
+        user_exclude_ingredients = [ingredient.strip() for ingredient in user_exclude_ingredients]
         
         recipe = dataset_manager.get_recipe_recommendations(user_ingredients,
                                                              user_exclude_ingredients,
                                                              user_preference['cuisine'],
                                                              user_preference['time'])
-        
-        session['recipe'] = recipe
-        print(recipe)
-        return jsonify({"response" : recipe})
-
+        if isinstance(recipe, list):
+            session['recipe'] = recipe
+            print(recipe)
+            return jsonify({"response" : recipe})
+        else:
+            session['recipe'] = []
+            return jsonify({"response": recipe})
 
     try:
         print("bot")
