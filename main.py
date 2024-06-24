@@ -9,9 +9,9 @@ app = Flask(__name__)
 
 app.secret_key = 'BAD_SECRET_KEY_16851wqdjnjhb'
 
-openai.api_key = 'sk-proj-dCED1zg0GuDJNeNOnL0yT3BlbkFJ7aInQ69mfQAIsw1SUvB3'
+openai.api_key = ''
 
-client = OpenAI(api_key='sk-proj-dCED1zg0GuDJNeNOnL0yT3BlbkFJ7aInQ69mfQAIsw1SUvB3')
+client = OpenAI(api_key='')
 
 def generate_response(user_message):
     try:
@@ -104,15 +104,23 @@ def chat():
         user_preference = session['user_preference']
         user_ingredients = session['user_ingredients']
         user_exclude_ingredients = user_message.split(';')
+
+        # !!! stripped the chosen and excluded ingredients for accurate formatted parameters
+        user_ingredients = [ingredient.strip() for ingredient in user_ingredients]
+        user_exclude_ingredients = [ingredient.strip() for ingredient in user_exclude_ingredients]
         
         recipe = dataset_manager.get_recipe_recommendations(user_ingredients,
                                                              user_exclude_ingredients,
                                                              user_preference['cuisine'],
                                                              user_preference['time'])
         
-        session['recipe'] = recipe
-        print(recipe)
-        return jsonify({"response" : recipe})
+        if isinstance(recipe, list):
+            session['recipe'] = recipe
+            print(recipe)
+            return jsonify({"response" : recipe})
+        else:
+            session['recipe'] = []
+            return jsonify({"response": recipe})
 
 
     try:
