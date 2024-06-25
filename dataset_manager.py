@@ -1,5 +1,5 @@
 import pandas as pd
-from ast import literal_eval
+import json
 
 def load_dishes_from_csv(csv_file):
     return pd.read_csv(csv_file)
@@ -19,16 +19,16 @@ def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_to
     #matching_dishes = matching_dishes[matching_dishes['ingredients'].apply(lambda x: set(ingredients).issubset(set(literal_eval(x))))]
     
     def has_required_ingredients(dish_ingredients):
-        dish_ingredients_set = set(literal_eval(dish_ingredients))
-        return set(ingredients).issubset(dish_ingredients_set)
+        dish_ingredients_list = json.loads(dish_ingredients)
+        return all(ingredient in dish_ingredients_list for ingredient in ingredients)
     
     matching_dishes = matching_dishes[matching_dishes['ingredients'].apply(has_required_ingredients)]
     
     if exclude_ingredients:
         def exclude_undesired_ingredients(dish_ingredients):
-            dish_ingredients_set = set(literal_eval(dish_ingredients))
+            dish_ingredients_list = json.loads(dish_ingredients)
         
-            return not any(exclude_ingredient in dish_ingredients_set for exclude_ingredient in exclude_ingredients)
+            return not any(exclude_ingredient in dish_ingredients_list for exclude_ingredient in exclude_ingredients)
         #for exclude_ingredient in exclude_ingredients:
         #    matching_dishes = matching_dishes[~matching_dishes['ingredients'].apply(lambda x: exclude_ingredient in literal_eval(x))]
         
