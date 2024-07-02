@@ -6,7 +6,7 @@ import time
 app = Flask(__name__)
 
 app.secret_key = 'BAD_SECRET_KEY_16851wqdjnjhb'
-
+openai.api_key = ''
 # Initialize the OpenAI client with API key
 client = openai.OpenAI(api_key='')
 
@@ -15,12 +15,12 @@ def generate_response(user_message):
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a personal chef. You are only giving recipes depending on my input, nothing else. If you understand, say OK."},
-                {"role": "user", "content": "OK"},
+                {"role": "user", "content": f"You are a personal chef. You are only giving recipes depending on my input, nothing else. If you understand, say OK."},
+                {"role": "system", "content": "OK"},
                 {"role": "user", "content": user_message}
             ]
         )
-        return completion['choices'][0].message.content.strip()
+        return completion.choices[0].message.content.strip()
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
