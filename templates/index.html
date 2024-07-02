@@ -5,19 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index Page</title>
     <style>
-        * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
+        /* Styles as given */
+        body {
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
             display: flex;
@@ -25,155 +14,122 @@ body {
             align-items: center;
             height: 100vh;
             margin: 0;
-}
-
-.container {
-    background-color: #d3d3d3;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 30%;
-    height: 500px;
-}
-
-.toggle-buttons {
-    /* display: flex; */
-    text-align: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    margin-top: 15px;
-}
-
-.toggle-button {
-    /* flex: 1; */
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    margin: 10px -2px;
-    cursor: pointer;
-    background-color: #bab86c;
-    transition: background-color 0.3s ease;
-}
-
-.toggle-button.active {
-    background-color: #808000;
-
-}
-
-.time-selector {
-    margin-bottom: 20px;
-    text-align: center;
-
-
-}
-
-.time-selector label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 14px;
-
-}
-
-#time-range {
-    width: 50%;
-
-}
-
-.datalists {
-    display: flex;
-    justify-content: space-between;
-}
-
-.datalists option {
-    display: inline-block;
-}
-
-.dropdowns {
-    margin-bottom: 20px;
-}
-
-.dropdowns label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-}
-
-.dropdowns select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-.start-chat {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    background-color: #808000;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.start-chat:hover {
-    background-color: #bab86c;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    .container {
-        padding: 15px;
-    }
-
-    .toggle-buttons {
-        flex-direction: column;
-    }
-
-    .toggle-button {
-        margin: 5px 0;
-    }
-}
-
-@media (max-width: 400px) {
-    .container {
-        padding: 10px;
-    }
-
-    .toggle-buttons {
-        flex-direction: column;
-    }
-
-    .toggle-button {
-        margin: 5px 0;
-        padding: 8px;
-    }
-
-    .time-selector label, .dropdowns label {
-        font-size: 12px;
-    }
-
-    .dropdowns select, .start-chat {
-        padding: 8px;
-        font-size: 14px;
-    }
-
-    .start-chat {
-        font-size: 14px;
-    }
-}
-
+        }
+        .container {
+            background-color: #d3d3d3;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 30%;
+            height: 500px;
+        }
+        .toggle-buttons {
+            text-align: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            margin-top: 15px;
+        }
+        .toggle-button {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            margin: 10px -2px;
+            cursor: pointer;
+            background-color: #bab86c;
+            transition: background-color 0.3s ease;
+        }
+        .toggle-button.active {
+            background-color: #808000;
+        }
+        .time-selector {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .time-selector label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        #time-range {
+            width: 50%;
+        }
+        .datalists {
+            display: flex;
+            justify-content: space-between;
+        }
+        .datalists option {
+            display: inline-block;
+        }
+        .dropdowns {
+            margin-bottom: 20px;
+        }
+        .dropdowns label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .dropdowns select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .start-chat {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #808000;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .start-chat:hover {
+            background-color: #bab86c;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .toggle-buttons {
+                flex-direction: column;
+            }
+            .toggle-button {
+                margin: 5px 0;
+            }
+        }
+        @media (max-width: 400px) {
+            .container {
+                padding: 10px;
+            }
+            .toggle-buttons {
+                flex-direction: column;
+            }
+            .toggle-button {
+                margin: 5px 0;
+                padding: 8px;
+            }
+            .time-selector label, .dropdowns label {
+                font-size: 12px;
+            }
+            .dropdowns select, .start-chat {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .start-chat {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
-    
     <div class="container">
         <div class="toggle-buttons">
-            <button class="toggle-button active">Can Go Shopping</button>
-            <button class="toggle-button">Ingredients at Home</button>
+            <button class="toggle-button active" id="shopping">Can Go Shopping</button>
+            <button class="toggle-button" id="homeIngredients">Ingredients at Home</button>
         </div>
         <div class="time-selector">
             <label for="time-range">Select the time you would like to spend</label>
@@ -185,8 +141,7 @@ body {
             </datalist>
         </div>
         <div class="dropdowns">
-
-            <label for="meal-type">Label</label>
+            <label for="meal-type">Meal Type</label>
             <select id="meal-type">
                 <option value="breakfast">Breakfast</option>
                 <option value="lunch">Lunch</option>
@@ -194,7 +149,6 @@ body {
                 <option value="snack">Snack</option>
                 <option value="dessert">Dessert</option>
             </select>
-
             <label for="cuisine">Select Cuisine</label>
             <select id="cuisine">
                 <option value="asian">Asian</option>
@@ -204,38 +158,42 @@ body {
                 <option value="indian">Indian</option>
             </select>
         </div>
-        <!-- using this to redirect but i need to post data as well -->
         <button id="startChat" class="start-chat">Start the Chat</button>
     </div>
-
     <script>
+        // Toggle button functionality
+        document.querySelectorAll('.toggle-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
         document.getElementById('startChat').addEventListener('click', function(event) {
             event.preventDefault();
-                    const user_preference = {
-                        time: document.getElementById('time-range').value,
-                        meal_type: document.getElementById('meal-type').value,
-                        cuisine: document.getElementById('cuisine').value,
-            
-                    };
+            const user_preference = {
+                time: document.getElementById('time-range').value,
+                meal_type: document.getElementById('meal-type').value,
+                cuisine: document.getElementById('cuisine').value,
+                ingredientsOption: document.querySelector('.toggle-button.active').id
+            };
 
-
-                    fetch('/chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(user_preference)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            window.location.href = "/frontend";
-                        } else {
-                            alert(data.message);
-                        }
-                    });
-                });
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user_preference)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = "/frontend";
+                } else {
+                    alert(data.message);
+                }
+            });
+        });
     </script>
-    
 </body>
 </html>
