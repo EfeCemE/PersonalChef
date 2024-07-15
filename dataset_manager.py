@@ -12,28 +12,63 @@ def filter_user_input(user_input, valid_options):
 
 def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_total_time):
     
-    # delete this line only for testing
-    #return "1. boil pasta with sauce then add oil in pan add sauce cook sauce for 5 minutes and boiled pasta enjoy"
+    initial_filtered_df = df[df['cuisine_path'].str.lower().str.contains(cuisine.lower(), na=False)]
+    filtered_df = initial_filtered_df[~initial_filtered_df['ingredients'].isin(exclude_ingredients)]
+    
+    #To store ranked ingredient list and rank score
+    matched_ingredient = []
+    unmatches = 999999999999
 
-    matching_dishes = df[df['cuisine_path'].str.contains(cuisine, case=False)]
-    #matching_dishes = matching_dishes[matching_dishes['ingredients'].apply(lambda x: set(ingredients).issubset(set(literal_eval(x))))]
-    
-    def has_required_ingredients(dish_ingredients):
-        dish_ingredients_list = json.loads(dish_ingredients)
-        return all(ingredient in dish_ingredients_list for ingredient in ingredients)
-    
-    matching_dishes = matching_dishes[matching_dishes['ingredients'].apply(has_required_ingredients)]
-    
-    if exclude_ingredients:
-        def exclude_undesired_ingredients(dish_ingredients):
-            dish_ingredients_list = json.loads(dish_ingredients)
+    #Method to filter reciepes based on ingredients and excluded ingredients
+    def check_match(recipe_ingredients):
+        if type(recipe_ingredients) != str:
+            return False
+
+        split_recipe_ingredients = recipe_ingredients.split(',')
+        split_recipe_ingredients = [x.lower() for x in split_recipe_ingredients]
+  
+        matches = 0
+        #if a user inputed ingredient is in reciepe we increase the match count
+        #if a user inputed excluded_ingredient is in reciepe we decrease the match count
+        for split_ingredient in split_recipe_ingredients:
+            if split_ingredient == '':
+                continue
+            for i in ingredients:
+                if i.lower() in split_ingredient:
+                #print( i.lower() + '**********' + split_ingredient)
+                    matches += 1
+            for i in exclude_ingredients:
+                if i.lower() in split_ingredient:
+                    print( i.lower() + '**********' + split_ingredient)
+                    matches -= 1
+       
+        global unmatches
+        global matched_ingredient
+
+        #if matches are above a certain threshold we consider only those recipe and rank them
+        if matches / len(ingredients)  >= 1:
+            match_score = len(split_recipe_ingredients) - matches
+            if match_score < unmatches:
+                unmatches = match_score
+                matched_ingredient = recipe_ingredients
+            print(matches)
+            return True
+        #if matches are below a certain threshold we do not consider
+        else:
+            return False
+
+
+
+    # Filter DataFrame based on match threshold
+    mask = filtered_df['ingredients'].apply(check_match)
+    ingriedient_filtered_df = filtered_df[mask]
+
+    print(matched_ingredient)
+    print(unmatches)
+
+    matching_dishes = ingriedient_filtered_df[ingriedient_filtered_df['ingredients'].str.contains(matched_ingredient, regex = False)]
+    matching_dishes
         
-            return not any(exclude_ingredient in dish_ingredients_list for exclude_ingredient in exclude_ingredients)
-        #for exclude_ingredient in exclude_ingredients:
-        #    matching_dishes = matching_dishes[~matching_dishes['ingredients'].apply(lambda x: exclude_ingredient in literal_eval(x))]
-        
-        matching_dishes = matching_dishes[matching_dishes['ingredients'].apply(exclude_undesired_ingredients)]
-    
     if max_total_time is not None:
         matching_dishes = matching_dishes[matching_dishes['total_time'] <= max_total_time]
     
