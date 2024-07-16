@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, session
 import openai
 import os
 import time
+import dataset_manager
 
 app = Flask(__name__)
 
@@ -68,18 +69,62 @@ def chat():
     if not user_message:
         return jsonify({'success': False, 'message': 'No message provided'})
 
-    chat_count = session.get('chat_count', 0)
+     # to clear session count
+    if(user_message == 'clear'):
+        session['chat_count'] = 0
+        return jsonify({"response": "Please Enter the ingredients like Chicken;Bread"})
 
-    if chat_count == 0:
+        # Initial input for user ingredients
+    if(session['chat_count'] == 0):
+        user_ingredients = user_message.split(';')
+        if(len(user_ingredients) == 0):
+            session['chat_count'] = 0
+            return jsonify({"response": "Please Enter the ingredients like Chicken;Bread"})
+        else:
+            session['chat_count'] = 1
+            session['user_ingredients'] = user_ingredients
+            print("=============== user ingredients======================")
+            print(session['user_ingredients'])
+
+            session['chat_count'] = 1
+            return jsonify({"response": "Please Enter the ingredients that you want to exclude like Chicken;Bread"})
+    
+        # Getting excluded ingredients
+    elif(session['chat_count'] == 1):
+        session['chat_count'] = 2
+
+        user_preference = session['user_preference']
+        user_ingredients = session['user_ingredients']
+        user_exclude_ingredients = user_message.split(';')
+
+        # !!! stripped the chosen and excluded ingredients for accurate formatted parameters
+        user_ingredients = [ingredient.strip() for ingredient in user_ingredients]
+        user_exclude_ingredients = [ingredient.strip() for ingredient in user_exclude_ingredients]
+
+        recipe = dataset_manager.get_recipe_recommendations(user_ingredients,
+                                                             user_exclude_ingredients,
+                                                             user_preference['meal_type'],
+                                                             user_preference['time'])
+
+        print(type(recipe))
+        if isinstance(recipe, list):
+            session['recipe'] = recipe
+            print(recipe)
+            return jsonify({"response" : recipe})
+        else:
+            session['recipe'] = []
+            return jsonify({"response": recipe})
+
+    elif session['chat_count']:
         user_preference = session.get('user_preference', {})
         initial_message = (f"You are a personal chef. Here are my preferences: I have {user_preference['ingredientsOption']} "
                            f"and I want to spend {user_preference['time']} minutes on a {user_preference['meal_type']} "
-                           f"with {user_preference['cuisine']} cuisine. Based on these, can you suggest some recipes?")
+                           f"with {user_preference['cuisine']} cuisine and this reciepe" + reciepe + "Based on these"
+                            + user_message)
         bot_response = retry_with_backoff(lambda: generate_response(initial_message))
+        session['chat_count'] = chat_count + 1
     else:
         bot_response = retry_with_backoff(lambda: generate_response(user_message))
-
-    session['chat_count'] = chat_count + 1
 
     return jsonify({'success': True, 'response': bot_response})
 

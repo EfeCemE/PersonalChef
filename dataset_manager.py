@@ -1,6 +1,9 @@
 import pandas as pd
 import json
 
+matched_ingredient = []
+unmatches = 999999999999
+
 def load_dishes_from_csv(csv_file):
     return pd.read_csv(csv_file)
 
@@ -10,15 +13,18 @@ df = load_dishes_from_csv('recipes.csv')
 def filter_user_input(user_input, valid_options):
     return [item.strip() for item in user_input.split(',') if item.strip() in valid_options]
 
+
+#To store ranked ingredient list and rank score
+matched_ingredient = []
+unmatches = 999999999999
+
+
+
 def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_total_time):
     
     initial_filtered_df = df[df['cuisine_path'].str.lower().str.contains(cuisine.lower(), na=False)]
     filtered_df = initial_filtered_df[~initial_filtered_df['ingredients'].isin(exclude_ingredients)]
     
-    #To store ranked ingredient list and rank score
-    matched_ingredient = []
-    unmatches = 999999999999
-
     #Method to filter reciepes based on ingredients and excluded ingredients
     def check_match(recipe_ingredients):
         if type(recipe_ingredients) != str:
@@ -26,7 +32,7 @@ def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_to
 
         split_recipe_ingredients = recipe_ingredients.split(',')
         split_recipe_ingredients = [x.lower() for x in split_recipe_ingredients]
-  
+
         matches = 0
         #if a user inputed ingredient is in reciepe we increase the match count
         #if a user inputed excluded_ingredient is in reciepe we decrease the match count
@@ -41,10 +47,10 @@ def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_to
                 if i.lower() in split_ingredient:
                     print( i.lower() + '**********' + split_ingredient)
                     matches -= 1
-       
+        
+
         global unmatches
         global matched_ingredient
-
         #if matches are above a certain threshold we consider only those recipe and rank them
         if matches / len(ingredients)  >= 1:
             match_score = len(split_recipe_ingredients) - matches
@@ -57,8 +63,6 @@ def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_to
         else:
             return False
 
-
-
     # Filter DataFrame based on match threshold
     mask = filtered_df['ingredients'].apply(check_match)
     ingriedient_filtered_df = filtered_df[mask]
@@ -67,12 +71,15 @@ def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_to
     print(unmatches)
 
     matching_dishes = ingriedient_filtered_df[ingriedient_filtered_df['ingredients'].str.contains(matched_ingredient, regex = False)]
-    matching_dishes
-        
-    if max_total_time is not None:
-        matching_dishes = matching_dishes[matching_dishes['total_time'] <= max_total_time]
+    print(matching_dishes)
     
+    matching_dishes_new = matching_dishes
+    if max_total_time is not None:
+        matching_dishes_new = matching_dishes[matching_dishes['total_time'] <= max_total_time]
+    
+    if not matching_dishes_new.empty:
+        matching_dishes = matching_dishes_new
     if not matching_dishes.empty:
-        return matching_dishes[['recipe_name', 'prep_time', 'cook_time', 'total_time', 'servings', 'ingredients', 'directions', 'cuisine_path']].to_dict(orient='records')
+        return matching_dishes [['recipe_name', 'prep_time', 'cook_time', 'total_time', 'servings', 'ingredients', 'directions', 'cuisine_path']].to_dict(orient='records')
     else:
         return "No matching dishes found."
