@@ -105,9 +105,8 @@ def chat():
                                                              user_exclude_ingredients,
                                                              user_preference['meal_type'],
                                                              user_preference['time'])
-
-        print(type(recipe))
-        if isinstance(recipe, list):
+        
+        if True:
             session['recipe'] = recipe
             print(recipe)
             return jsonify({"response" : recipe})

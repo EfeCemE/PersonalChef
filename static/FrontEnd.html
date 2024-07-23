@@ -163,6 +163,7 @@
                 const botMessageDiv = document.createElement('div');
                 botMessageDiv.className = 'chat-message bot-message';
                 botMessageDiv.innerText = data.response;
+                console.log(data.response)
                 document.getElementById('chatBox').appendChild(botMessageDiv);
 
                 // Scroll chat box to bottom

@@ -80,6 +80,12 @@ def get_recipe_recommendations(ingredients, exclude_ingredients, cuisine, max_to
     if not matching_dishes_new.empty:
         matching_dishes = matching_dishes_new
     if not matching_dishes.empty:
-        return matching_dishes [['recipe_name', 'prep_time', 'cook_time', 'total_time', 'servings', 'ingredients', 'directions', 'cuisine_path']].to_dict(orient='records')
+        reciepe = "Recipe Name : "  .join(str(matching_dishes['recipe_name'])) .join( 
+                  "\n") + "Preparation Time: "  .join(str(matching_dishes['prep_time'])) .join(
+                  "\n") + "Cook Time: "  .join(matching_dishes['cook_time']) .join(
+                  "\n") + "Serving: "  .join(str(matching_dishes['servings'])) .join(
+                  "\n") + "Ingredients  :"  "\n".join(matching_dishes['ingredients']) .join(
+                  "\n") + "Instruction :"  "\n".join(matching_dishes['directions'])
+        return reciepe
     else:
         return "No matching dishes found."
